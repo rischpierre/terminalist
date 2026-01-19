@@ -77,7 +77,7 @@ impl SidebarItem for SidebarItemType {
             SidebarItemType::SpecialView { name, selection } => {
                 let is_selected = current_selection == selection;
                 let style = if is_selected {
-                    Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::Black)
                 };
@@ -121,7 +121,7 @@ impl SidebarItem for SidebarItemType {
                     SidebarSelection::Project(idx) if idx == original_index
                 );
                 let style = if is_selected {
-                    Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::Black)
                 };
@@ -167,7 +167,7 @@ impl SidebarItem for SidebarItemType {
                     SidebarSelection::Label(idx) if idx == original_index
                 );
                 let style = if is_selected {
-                    Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::Black)
                 };

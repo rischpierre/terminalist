@@ -1280,10 +1280,10 @@ impl AppComponent {
         let spinner = "⟳";
         let content = Paragraph::new(Line::from(Span::styled(
             format!("{} {}…", spinner, title),
-            Style::default().fg(Color::Yellow),
+            Style::default().fg(Color::Red),
         )))
         .alignment(Alignment::Center)
-        .block(Block::default().borders(Borders::ALL).style(Style::default().fg(Color::Yellow)));
+        .block(Block::default().borders(Borders::ALL).style(Style::default().fg(Color::Red)));
 
         f.render_widget(Clear, popup_area);
         f.render_widget(content, popup_area);

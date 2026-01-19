@@ -882,7 +882,7 @@ impl Theme {
             accent: Color::Magenta,
             error: Color::Red,
             success: Color::Green,
-            warning: Color::Yellow,
+            warning: Color::Red,
             background: Color::Black,
             surface: Color::Rgb(30, 30, 30),
             text: Color::White,

@@ -71,7 +71,7 @@ pub fn render_project_edit_dialog(f: &mut Frame, area: Rect, _icons: &IconServic
     let dialog_area = LayoutManager::centered_rect_lines(65, 9, area);
     f.render_widget(Clear, dialog_area);
 
-    let main_block = common::create_dialog_block("Edit Project", Color::Yellow);
+    let main_block = common::create_dialog_block("Edit Project", Color::Red);
 
     // Create layout for content
     let inner_area = main_block.inner(dialog_area);

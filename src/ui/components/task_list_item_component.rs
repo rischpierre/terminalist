@@ -134,7 +134,7 @@ impl ListItem for TaskItem {
             Style::default().fg(Color::Green)
         } else if selected {
             // Selected active tasks: yellow and bold
-            Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+            Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
         } else {
             // Normal active tasks: white
             Style::default().fg(Color::Black)
@@ -156,7 +156,7 @@ impl ListItem for TaskItem {
             Style::default().fg(Color::Gray).add_modifier(Modifier::CROSSED_OUT)
         } else if selected {
             // Selected active tasks: yellow and bold
-            Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+            Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
         } else {
             // Normal active tasks: white
             Style::default().fg(Color::Black)
