@@ -79,7 +79,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::White)
+                    Style::default().fg(Color::Black)
                 };
 
                 let icon = match selection {
@@ -123,7 +123,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::White)
+                    Style::default().fg(Color::Black)
                 };
 
                 let tree_prefix = if *depth > 0 {
@@ -151,7 +151,7 @@ impl SidebarItem for SidebarItemType {
                 }
 
                 if !tree_prefix.is_empty() {
-                    spans.push(Span::styled(tree_prefix, Style::default().fg(Color::DarkGray)));
+                    spans.push(Span::styled(tree_prefix, Style::default().fg(Color::Gray)));
                 }
                 spans.push(Span::styled(icon.to_string(), style));
                 spans.push(Span::styled(project.name.clone(), style));
@@ -169,7 +169,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::White)
+                    Style::default().fg(Color::Black)
                 };
 
                 ListItem::new(Line::from(vec![

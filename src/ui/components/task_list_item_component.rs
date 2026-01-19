@@ -122,7 +122,7 @@ impl ListItem for TaskItem {
             // Add tree connector for the current level
             indent_str.push_str("└─");
 
-            line_spans.push(Span::styled(indent_str, Style::default().fg(Color::DarkGray)));
+            line_spans.push(Span::styled(indent_str, Style::default().fg(Color::Gray)));
         }
 
         // Status icon with state-based styling
@@ -137,7 +137,7 @@ impl ListItem for TaskItem {
             Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
         } else {
             // Normal active tasks: white
-            Style::default().fg(Color::White)
+            Style::default().fg(Color::Black)
         };
         line_spans.push(Span::styled(format!("{} ", status_icon), status_style));
 
@@ -153,13 +153,13 @@ impl ListItem for TaskItem {
             Style::default().fg(Color::Red).add_modifier(Modifier::CROSSED_OUT)
         } else if self.task.is_completed {
             // Completed tasks: gray with strikethrough
-            Style::default().fg(Color::DarkGray).add_modifier(Modifier::CROSSED_OUT)
+            Style::default().fg(Color::Gray).add_modifier(Modifier::CROSSED_OUT)
         } else if selected {
             // Selected active tasks: yellow and bold
             Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
         } else {
             // Normal active tasks: white
-            Style::default().fg(Color::White)
+            Style::default().fg(Color::Black)
         };
         line_spans.push(Span::styled(self.task.content.clone(), content_style));
 
@@ -230,7 +230,7 @@ impl ListItem for TaskItem {
                     line_spans.push(Span::raw(" - "));
                     line_spans.push(Span::styled(
                         description_line.to_string(),
-                        Style::default().fg(Color::DarkGray).add_modifier(Modifier::ITALIC),
+                        Style::default().fg(Color::Gray).add_modifier(Modifier::ITALIC),
                     ));
                 }
             }
@@ -298,7 +298,7 @@ impl ListItem for SeparatorItem {
 
         RatatuiListItem::new(Line::from(Span::styled(
             format!("{}{}", indent_str, separator),
-            Style::default().fg(Color::DarkGray),
+            Style::default().fg(Color::Gray),
         )))
     }
 

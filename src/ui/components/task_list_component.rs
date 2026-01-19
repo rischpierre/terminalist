@@ -636,15 +636,15 @@ impl Component for TaskListComponent {
             List::new(vec![RatatuiListItem::new(empty_message)])
         } else {
             List::new(self.create_list_items(list_area))
-                .highlight_style(Style::default().bg(Color::DarkGray).add_modifier(Modifier::BOLD))
+                .highlight_style(Style::default().bg(Color::Gray).add_modifier(Modifier::BOLD))
         }
         .block(
             Block::default()
                 .borders(Borders::ALL)
                 .border_type(BorderType::Rounded)
                 .title("Tasks")
-                .title_style(Style::default().fg(Color::White))
-                .border_style(Style::default().fg(Color::DarkGray)),
+                .title_style(Style::default().fg(Color::Black))
+                .border_style(Style::default().fg(Color::Gray)),
         );
 
         // Update scrollbar state with current position and viewport info

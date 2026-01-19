@@ -65,7 +65,7 @@ pub fn create_priority_badge(priority: i32) -> Option<Span<'static>> {
             "⚑",
             Style::default().fg(Color::Blue).add_modifier(Modifier::BOLD),
         )), // P3 = blue flag
-        1 => Some(Span::styled("⚐", Style::default().fg(Color::White))), // P4 = white flag (default color)
-        _ => Some(Span::styled("⚐", Style::default().fg(Color::White))), // Unknown priority = P4 = white flag
+        1 => Some(Span::styled("⚐", Style::default().fg(Color::Gray))), // P4 = gray flag (default color)
+        _ => Some(Span::styled("⚐", Style::default().fg(Color::Gray))), // Unknown priority = P4 = gray flag
     }
 }

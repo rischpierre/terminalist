@@ -114,8 +114,8 @@ impl ScrollbarHelper {
                 .end_symbol(Some("↓"))
                 .track_symbol(Some("│"))
                 .thumb_symbol("█")
-                .style(Style::default().fg(Color::DarkGray))
-                .thumb_style(Style::default().fg(Color::DarkGray));
+                .style(Style::default().fg(Color::Gray))
+                .thumb_style(Style::default().fg(Color::Gray));
 
             f.render_stateful_widget(scrollbar, area, &mut self.state);
         }
