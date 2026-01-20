@@ -205,6 +205,7 @@ impl TaskManager {
                         SidebarSelection::Today => sync_service.get_tasks_for_today().await.unwrap_or_default(),
                         SidebarSelection::Tomorrow => sync_service.get_tasks_for_tomorrow().await.unwrap_or_default(),
                         SidebarSelection::Upcoming => sync_service.get_tasks_for_upcoming().await.unwrap_or_default(),
+                        SidebarSelection::WorkToday => sync_service.get_tasks_for_work_today().await.unwrap_or_default(),
                         SidebarSelection::Project(index) => {
                             if let Some(project) = projects.get(index) {
                                 sync_service.get_tasks_for_project(&project.uuid).await.unwrap_or_default()

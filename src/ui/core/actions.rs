@@ -8,6 +8,7 @@ pub enum SidebarSelection {
     Today, // Today view (special view)
     Tomorrow,       // Tomorrow view (special view)
     Upcoming,       // Upcoming view (tasks with future due dates)
+    WorkToday,      // Work project tasks for today (special view)
     Label(usize),   // Index into labels vector
     Project(usize), // Index into projects vector
 }
@@ -30,6 +31,7 @@ pub enum Action {
     CreateTask {
         content: String,
         project_uuid: Option<Uuid>,
+        due_date: Option<String>,
     },
     EditTask {
         task_uuid: Uuid,
@@ -103,6 +105,7 @@ pub enum Action {
 pub enum DialogType {
     TaskCreation {
         default_project_uuid: Option<Uuid>,
+        default_due_date: Option<String>,
     },
     TaskEdit {
         task_uuid: Uuid,

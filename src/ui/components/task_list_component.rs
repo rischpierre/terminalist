@@ -111,6 +111,7 @@ impl TaskListComponent {
             SidebarSelection::Today => self.build_today_items(),
             SidebarSelection::Tomorrow => self.build_tomorrow_items(),
             SidebarSelection::Upcoming => self.build_upcoming_items(),
+            SidebarSelection::WorkToday => self.build_work_today_items(),
             SidebarSelection::Project(index) => {
                 if let Some(project) = self.projects.get(*index) {
                     let project_id = project.uuid;
@@ -132,6 +133,53 @@ impl TaskListComponent {
 
     /// Build items for Today view (with Overdue and Today sections)
     fn build_today_items(&mut self) {
+        use crate::ui::components::task_list_item_component::{HeaderItem, SeparatorItem};
+
+        let now = chrono::Local::now().date_naive();
+        let mut overdue_tasks = Vec::new();
+        let mut today_tasks = Vec::new();
+
+        // Separate tasks by date (only root tasks - subtasks will be added recursively)
+        for task in self.tasks.iter().filter(|t| t.parent_uuid.is_none()) {
+            if let Some(due_date_str) = &task.due_date {
+                if let Ok(due_date) = datetime::parse_date(due_date_str) {
+                    if due_date < now {
+                        overdue_tasks.push(task.clone());
+                    } else if due_date == now {
+                        today_tasks.push(task.clone());
+                    }
+                }
+            }
+        }
+
+        // Add overdue section if there are overdue tasks
+        if !overdue_tasks.is_empty() {
+            self.items
+                .push(TaskListItemType::Header(HeaderItem::new(HEADER_OVERDUE.to_string(), 0)));
+
+            for task in overdue_tasks {
+                self.add_task_and_children_to_items(task, 0);
+            }
+
+            // Add separator between sections if we have both
+            if !today_tasks.is_empty() {
+                self.items.push(TaskListItemType::Separator(SeparatorItem::new(0)));
+            }
+        }
+
+        // Add today section if there are today tasks
+        if !today_tasks.is_empty() {
+            self.items
+                .push(TaskListItemType::Header(HeaderItem::new(HEADER_TODAY.to_string(), 0)));
+
+            for task in today_tasks {
+                self.add_task_and_children_to_items(task, 0);
+            }
+        }
+    }
+
+    /// Build items for Work&Today view (Work project tasks with Overdue and Today sections)
+    fn build_work_today_items(&mut self) {
         use crate::ui::components::task_list_item_component::{HeaderItem, SeparatorItem};
 
         let now = chrono::Local::now().date_naive();
@@ -559,12 +607,25 @@ impl Component for TaskListComponent {
                 }
             }
             KeyCode::Char('a') => {
-                // When viewing a specific project, preselect it as the default project
-                let default_project_uuid = match &self.sidebar_selection {
-                    SidebarSelection::Project(index) => self.projects.get(*index).map(|p| p.uuid),
-                    _ => None,
+                // When viewing a specific project or WorkToday, preselect defaults
+                let (default_project_uuid, default_due_date) = match &self.sidebar_selection {
+                    SidebarSelection::Project(index) => {
+                        (self.projects.get(*index).map(|p| p.uuid), None)
+                    }
+                    SidebarSelection::WorkToday => {
+                        // Find Work project UUID
+                        let work_project = self.projects.iter()
+                            .find(|p| p.name == "Work")
+                            .map(|p| p.uuid);
+                        let today = datetime::format_today();
+                        (work_project, Some(today))
+                    }
+                    _ => (None, None),
                 };
-                Action::ShowDialog(DialogType::TaskCreation { default_project_uuid })
+                Action::ShowDialog(DialogType::TaskCreation {
+                    default_project_uuid,
+                    default_due_date,
+                })
             }
             KeyCode::Char('e') => {
                 if let Some(task) = self.get_selected_task() {

@@ -95,6 +95,10 @@ impl SidebarComponent {
             name: "Upcoming".to_string(),
             selection: SidebarSelection::Upcoming,
         });
+        self.items.push(SidebarItemType::SpecialView {
+            name: "Work&today".to_string(),
+            selection: SidebarSelection::WorkToday,
+        });
 
         // Use placeholder account ID for now
         let account_id = "main".to_string();

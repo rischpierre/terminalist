@@ -123,6 +123,29 @@ impl TaskRepository {
         Ok(result)
     }
 
+    /// Get tasks for a specific project scheduled for today (overdue + today).
+    pub async fn get_for_project_today<C>(
+        conn: &C,
+        project_uuid: &Uuid,
+        today: &str,
+    ) -> Result<Vec<task::Model>>
+    where
+        C: ConnectionTrait,
+    {
+        let overdue_tasks = task::Entity::overdue(today)
+            .filter(task::Column::ProjectUuid.eq(*project_uuid))
+            .all(conn)
+            .await?;
+        let today_tasks = task::Entity::due_today(today)
+            .filter(task::Column::ProjectUuid.eq(*project_uuid))
+            .all(conn)
+            .await?;
+
+        let mut result = overdue_tasks;
+        result.extend(today_tasks);
+        Ok(result)
+    }
+
     /// Get tasks scheduled for tomorrow.
     pub async fn get_for_tomorrow<C>(conn: &C, tomorrow: &str) -> Result<Vec<task::Model>>
     where

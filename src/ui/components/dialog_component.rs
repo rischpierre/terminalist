@@ -145,7 +145,7 @@ impl DialogComponent {
 
     fn handle_submit(&mut self) -> Action {
         match &self.dialog_type {
-            Some(DialogType::TaskCreation { default_project_uuid }) => {
+            Some(DialogType::TaskCreation { default_project_uuid, default_due_date }) => {
                 if !self.input_buffer.is_empty() {
                     // Determine the project UUID based on whether user explicitly selected via Tab
                     let project_uuid = if self.task_project_explicitly_selected {
@@ -172,6 +172,7 @@ impl DialogComponent {
                     let action = Action::CreateTask {
                         content: self.input_buffer.clone(),
                         project_uuid,
+                        due_date: default_due_date.clone(),
                     };
                     self.clear_dialog();
                     action
@@ -811,7 +812,7 @@ impl Component for DialogComponent {
                         self.input_buffer = name.clone();
                         self.cursor_position = name.chars().count();
                     }
-                    DialogType::TaskCreation { default_project_uuid } => {
+                    DialogType::TaskCreation { default_project_uuid, default_due_date: _ } => {
                         self.input_buffer.clear();
                         self.cursor_position = 0;
                         // Set the selected task project index and UUID if a default project is provided

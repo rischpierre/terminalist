@@ -281,6 +281,33 @@ impl SyncService {
         TaskRepository::get_for_upcoming(&storage.conn, &today, &three_months_later).await
     }
 
+    /// Retrieves tasks for the "Work&today" view with business logic.
+    ///
+    /// This method gets tasks from the "Work" project that are due today or overdue.
+    /// If the "Work" project doesn't exist, returns an empty vector.
+    ///
+    /// # Returns
+    /// A vector of `task::Model` objects for the Work&today view
+    ///
+    /// # Errors
+    /// Returns an error if local storage access fails
+    pub async fn get_tasks_for_work_today(&self) -> Result<Vec<task::Model>> {
+        let storage = self.storage.lock().await;
+        let today = datetime::format_today();
+
+        // Find the "Work" project UUID
+        let work_project = project::Entity::find()
+            .filter(project::Column::Name.eq("Work"))
+            .one(&storage.conn)
+            .await?;
+
+        if let Some(project) = work_project {
+            TaskRepository::get_for_project_today(&storage.conn, &project.uuid, &today).await
+        } else {
+            Ok(Vec::new())
+        }
+    }
+
     /// Get a single task by ID from local storage (fast)
     pub async fn get_task_by_id(&self, task_id: &Uuid) -> Result<Option<task::Model>> {
         let storage = self.storage.lock().await;
@@ -379,7 +406,7 @@ impl SyncService {
     ///
     /// # Errors
     /// Returns an error if the backend call fails or local storage update fails
-    pub async fn create_task(&self, content: &str, project_uuid: Option<Uuid>) -> Result<()> {
+    pub async fn create_task(&self, content: &str, project_uuid: Option<Uuid>, due_date: Option<&str>) -> Result<()> {
         // Look up remote_id for project if provided
         let remote_project_id = if let Some(uuid) = project_uuid {
             Some(self.get_project_remote_id(&uuid).await?)
@@ -395,7 +422,7 @@ impl SyncService {
             section_remote_id: None,
             parent_remote_id: None,
             priority: None,
-            due_date: None,
+            due_date: due_date.map(|s| s.to_string()),
             due_datetime: None,
             duration: None,
             labels: Vec::new(),

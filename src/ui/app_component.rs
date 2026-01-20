@@ -292,6 +292,10 @@ impl AppComponent {
                         info!("Global key: 'D' - cannot delete Upcoming view");
                         Action::ShowDialog(DialogType::Info("Cannot delete the Upcoming view".to_string()))
                     }
+                    SidebarSelection::WorkToday => {
+                        info!("Global key: 'D' - cannot delete Work&today view");
+                        Action::ShowDialog(DialogType::Info("Cannot delete the Work&today view".to_string()))
+                    }
                     SidebarSelection::Label(index) => {
                         if let Some(label) = self.state.labels.get(*index) {
                             info!("Global key: 'D' - deleting label '{}' (ID: {})", label.name, label.uuid);
@@ -335,6 +339,10 @@ impl AppComponent {
                     SidebarSelection::Upcoming => {
                         info!("Global key: 'E' - cannot edit Upcoming view");
                         Action::ShowDialog(DialogType::Info("Cannot edit the Upcoming view".to_string()))
+                    }
+                    SidebarSelection::WorkToday => {
+                        info!("Global key: 'E' - cannot edit Work&today view");
+                        Action::ShowDialog(DialogType::Info("Cannot edit the Work&today view".to_string()))
                     }
                     SidebarSelection::Label(index) => {
                         if let Some(label) = self.state.labels.get(*index) {
@@ -479,6 +487,7 @@ impl AppComponent {
                     SidebarSelection::Today => "Today".to_string(),
                     SidebarSelection::Tomorrow => "Tomorrow".to_string(),
                     SidebarSelection::Upcoming => "Upcoming".to_string(),
+                    SidebarSelection::WorkToday => "Work&today".to_string(),
                     SidebarSelection::Project(index) => {
                         if let Some(project) = self.state.projects.get(*index) {
                             format!("Project({}) '{}'", index, project.name)
@@ -503,17 +512,19 @@ impl AppComponent {
                 Action::None
             }
             // Task operations with background execution
-            Action::CreateTask { content, project_uuid } => {
+            Action::CreateTask { content, project_uuid, due_date } => {
                 let project_desc = match &project_uuid {
                     Some(uuid) => format!(" in project {}", uuid),
                     None => " in inbox".to_string(),
                 };
                 info!("Task: Creating task with content '{}'{}", content, project_desc);
 
-                // Format task info to include both content and project_uuid
-                let task_info = match project_uuid {
-                    Some(pid) => format!("{}|{}", content, pid),
-                    None => content,
+                // Format task info to include content, project_uuid, and due_date
+                let task_info = match (project_uuid, due_date) {
+                    (Some(pid), Some(date)) => format!("{}|{}|{}", content, pid, date),
+                    (Some(pid), None) => format!("{}|{}", content, pid),
+                    (None, Some(date)) => format!("{}||{}", content, date),
+                    (None, None) => content,
                 };
                 self.spawn_task_operation("Create task".to_string(), task_info);
                 Action::None
@@ -950,22 +961,35 @@ impl AppComponent {
                         }
                     }
                     "Create task" => {
-                        // task_info format: "content|project_id" or just "content" for inbox
-                        if let Some((content, project_id_str)) = task_info.split_once('|') {
-                            // Task has a specific project - parse the UUID
-                            match Uuid::parse_str(project_id_str) {
-                                Ok(project_uuid) => match sync_service.create_task(content, Some(project_uuid)).await {
-                                    Ok(()) => Ok(format!("{}: {}", SUCCESS_TASK_CREATED_PROJECT, content)),
-                                    Err(e) => Err(format!("{}: {}", ERROR_TASK_CREATE_FAILED, e)),
-                                },
-                                Err(e) => Err(format!("Invalid project UUID: {}", e)),
-                            }
+                        // task_info format: "content|project_id|due_date", "content|project_id", "content||due_date", or "content"
+                        let parts: Vec<&str> = task_info.splitn(3, '|').collect();
+                        let content = parts[0];
+                        let project_uuid_result = if parts.len() > 1 && !parts[1].is_empty() {
+                            Uuid::parse_str(parts[1])
                         } else {
-                            // Task goes to inbox (no project_id)
-                            match sync_service.create_task(&task_info, None).await {
-                                Ok(()) => Ok(format!("{}: {}", SUCCESS_TASK_CREATED_INBOX, task_info)),
-                                Err(e) => Err(format!("{}: {}", ERROR_TASK_CREATE_FAILED, e)),
+                            Ok(Uuid::nil())
+                        };
+                        let due_date = if parts.len() > 2 && !parts[2].is_empty() {
+                            Some(parts[2])
+                        } else {
+                            None
+                        };
+
+                        match project_uuid_result {
+                            Ok(uuid) => {
+                                let project_uuid = if uuid.is_nil() { None } else { Some(uuid) };
+                                match sync_service.create_task(content, project_uuid, due_date).await {
+                                    Ok(()) => {
+                                        if project_uuid.is_some() {
+                                            Ok(format!("{}: {}", SUCCESS_TASK_CREATED_PROJECT, content))
+                                        } else {
+                                            Ok(format!("{}: {}", SUCCESS_TASK_CREATED_INBOX, content))
+                                        }
+                                    },
+                                    Err(e) => Err(format!("{}: {}", ERROR_TASK_CREATE_FAILED, e)),
+                                }
                             }
+                            Err(e) => Err(format!("Invalid project UUID: {}", e)),
                         }
                     }
                     "Edit task" => {
