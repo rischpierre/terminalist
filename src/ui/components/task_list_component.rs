@@ -697,7 +697,7 @@ impl Component for TaskListComponent {
             List::new(vec![RatatuiListItem::new(empty_message)])
         } else {
             List::new(self.create_list_items(list_area))
-                .highlight_style(Style::default().bg(Color::Gray).add_modifier(Modifier::BOLD))
+                .highlight_style(Style::default().bg(Color::Rgb(220, 220, 220)).add_modifier(Modifier::BOLD))
         }
         .block(
             Block::default()
