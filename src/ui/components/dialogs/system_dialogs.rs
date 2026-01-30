@@ -69,7 +69,7 @@ fn render_scrollable_message_dialog(
     };
 
     let message_paragraph = Paragraph::new(message_text)
-        .style(Style::default().fg(Color::Black))
+        .style(Style::default().fg(Color::Rgb(40, 40, 40)))
         .alignment(Alignment::Left)
         .wrap(ratatui::widgets::Wrap { trim: true });
 
@@ -88,7 +88,7 @@ fn render_scrollable_message_dialog(
             .track_symbol(Some("│"))
             .thumb_symbol("▐")
             .style(Style::default().fg(Color::Gray))
-            .thumb_style(Style::default().fg(Color::Black));
+            .thumb_style(Style::default().fg(Color::Rgb(40, 40, 40)));
 
         f.render_stateful_widget(scrollbar, content_area, scrollbar_state);
     }
@@ -122,7 +122,7 @@ pub fn render_delete_confirmation_dialog(f: &mut Frame, area: Rect, icons: &Icon
     // Confirmation message
     let message = format!("Are you sure you want to delete this {}?", item_type);
     let message_paragraph = Paragraph::new(message)
-        .style(Style::default().fg(Color::Black))
+        .style(Style::default().fg(Color::Rgb(40, 40, 40)))
         .alignment(Alignment::Center);
 
     // Enhanced instructions with color-coded shortcuts
@@ -289,7 +289,7 @@ Press 'Esc', '?' or 'h' to close this help panel
                 .title("📖 Help - Press 'Esc', '?' or 'h' to close")
                 .title_alignment(Alignment::Center),
         )
-        .style(Style::default().fg(Color::Black))
+        .style(Style::default().fg(Color::Rgb(40, 40, 40)))
         .alignment(Alignment::Left);
 
     f.render_widget(help_paragraph, help_content_area);
@@ -301,7 +301,7 @@ Press 'Esc', '?' or 'h' to close this help panel
             .track_symbol(Some("│"))
             .thumb_symbol("▐")
             .style(Style::default().fg(Color::Gray))
-            .thumb_style(Style::default().fg(Color::Black));
+            .thumb_style(Style::default().fg(Color::Rgb(40, 40, 40)));
 
         f.render_stateful_widget(scrollbar, help_content_area, scrollbar_state);
     }
@@ -351,7 +351,7 @@ pub fn render_logs_dialog(f: &mut Frame, area: Rect, scroll_offset: usize, scrol
                 .title("🔍 Debug Logs - Press 'Esc', 'G' or 'q' to close")
                 .title_alignment(Alignment::Center),
         )
-        .style(Style::default().fg(Color::Black))
+        .style(Style::default().fg(Color::Rgb(40, 40, 40)))
         .alignment(Alignment::Left);
 
     f.render_widget(logs_paragraph, logs_content_area);
@@ -363,7 +363,7 @@ pub fn render_logs_dialog(f: &mut Frame, area: Rect, scroll_offset: usize, scrol
             .track_symbol(Some("│"))
             .thumb_symbol("▐")
             .style(Style::default().fg(Color::Gray))
-            .thumb_style(Style::default().fg(Color::Black));
+            .thumb_style(Style::default().fg(Color::Rgb(40, 40, 40)));
 
         f.render_stateful_widget(scrollbar, logs_content_area, scrollbar_state);
     }

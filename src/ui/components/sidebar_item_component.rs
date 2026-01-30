@@ -79,7 +79,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::Black)
+                    Style::default().fg(Color::Rgb(40, 40, 40))
                 };
 
                 let icon = match selection {
@@ -123,7 +123,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::Black)
+                    Style::default().fg(Color::Rgb(40, 40, 40))
                 };
 
                 let tree_prefix = if *depth > 0 {
@@ -169,7 +169,7 @@ impl SidebarItem for SidebarItemType {
                 let style = if is_selected {
                     Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
                 } else {
-                    Style::default().fg(Color::Black)
+                    Style::default().fg(Color::Rgb(40, 40, 40))
                 };
 
                 ListItem::new(Line::from(vec![

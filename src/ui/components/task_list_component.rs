@@ -704,7 +704,7 @@ impl Component for TaskListComponent {
                 .borders(Borders::ALL)
                 .border_type(BorderType::Rounded)
                 .title("Tasks")
-                .title_style(Style::default().fg(Color::Black))
+                .title_style(Style::default().fg(Color::Rgb(40, 40, 40)))
                 .border_style(Style::default().fg(Color::Gray)),
         );
 

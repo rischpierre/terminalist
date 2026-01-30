@@ -24,12 +24,12 @@ pub fn create_input_paragraph<'a>(input_buffer: &'a str, field_title: &str) -> P
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
         .title(format!(" {} ", field_title))
-        .title_style(Style::default().fg(Color::Black))
+        .title_style(Style::default().fg(Color::DarkGray))
         .style(Style::default().fg(Color::Gray));
 
     Paragraph::new(input_display)
         .block(input_block)
-        .style(Style::default().fg(Color::Black))
+        .style(Style::default().fg(Color::DarkGray))
 }
 
 /// Creates a selection field block (read-only display with title)
@@ -38,10 +38,10 @@ pub fn create_selection_paragraph(value: String, field_title: &str) -> Paragraph
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
         .title(format!(" {} ", field_title))
-        .title_style(Style::default().fg(Color::Black))
+        .title_style(Style::default().fg(Color::DarkGray))
         .style(Style::default().fg(Color::Gray));
 
-    Paragraph::new(value).block(block).style(Style::default().fg(Color::Black))
+    Paragraph::new(value).block(block).style(Style::default().fg(Color::DarkGray))
 }
 
 /// Instruction shortcut definition: (key, color, description)

@@ -136,8 +136,8 @@ impl ListItem for TaskItem {
             // Selected active tasks: yellow and bold
             Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
         } else {
-            // Normal active tasks: white
-            Style::default().fg(Color::Black)
+            // Normal active tasks: dark gray
+            Style::default().fg(Color::DarkGray)
         };
         line_spans.push(Span::styled(format!("{} ", status_icon), status_style));
 
@@ -158,8 +158,8 @@ impl ListItem for TaskItem {
             // Selected active tasks: yellow and bold
             Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
         } else {
-            // Normal active tasks: white
-            Style::default().fg(Color::Black)
+            // Normal active tasks: very dark gray
+            Style::default().fg(Color::Rgb(40, 40, 40))
         };
         line_spans.push(Span::styled(self.task.content.clone(), content_style));
 

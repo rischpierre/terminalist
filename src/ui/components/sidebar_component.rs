@@ -507,10 +507,10 @@ impl Component for SidebarComponent {
                     .borders(Borders::ALL)
                     .border_type(BorderType::Rounded)
                     .title("Navigation")
-                    .title_style(Style::default().fg(Color::Black))
+                    .title_style(Style::default().fg(Color::DarkGray))
                     .border_style(Style::default().fg(Color::Gray)),
             )
-            .style(Style::default().fg(Color::Black));
+            .style(Style::default().fg(Color::DarkGray));
 
         f.render_stateful_widget(list, list_area, &mut self.list_state);
 
