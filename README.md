@@ -15,18 +15,18 @@ A terminal application for interacting with Todoist, built in Rust with a modern
 
 ## Features
 
-- ✅ **Interactive TUI Interface** - Beautiful terminal user interface with ratatui
-- ✅ **Local Data Caching** - Fast, responsive UI with in-memory SQLite storage
-- ✅ **Smart Sync** - Automatic sync on startup and manual refresh with 'r'
-- ✅ **Project Management** - Browse projects with hierarchical display
-- ✅ **Task Management** - View, navigate, complete, and create tasks
-- ✅ **Task Search** - Fast database-powered search across all tasks with '/' shortcut
-- ✅ **Keyboard & Mouse Navigation** - Efficient keyboard operation with mouse support
-- ✅ **Real-time Updates** - Create, complete, and delete tasks/projects
-- ✅ **Label Support** - View task labels with colored badges
-- ✅ **Responsive Layout** - Adapts to terminal size with smart scaling
-- ✅ **Help System** - Built-in help panel with keyboard shortcuts
-- ✅ **Configuration File** - Customizable settings via TOML configuration
+- **Interactive TUI Interface** - Beautiful terminal user interface with ratatui
+- **Local Data Caching** - Fast, responsive UI with in-memory SQLite storage
+- **Smart Sync** - Automatic sync on startup and manual refresh with 'r'
+- **Project Management** - Browse projects with hierarchical display
+- **Task Management** - View, navigate, complete, and create tasks
+- **Task Search** - Fast database-powered search across all tasks with '/' shortcut
+- **Keyboard & Mouse Navigation** - Efficient keyboard operation with mouse support
+- **Real-time Updates** - Create, complete, and delete tasks/projects
+- **Label Support** - View task labels with colored badges
+- **Responsive Layout** - Adapts to terminal size with smart scaling
+- **Help System** - Built-in help panel with keyboard shortcuts
+- **Configuration File** - Customizable settings via TOML configuration
 
 ## Installation
 
@@ -42,13 +42,7 @@ brew install terminalist
 ### Option 2: Install from AUR (Arch Linux)
 
 ```bash
-# Using yay
-yay -S terminalist
-
-# Using paru
-paru -S terminalist
-
-# Or any other AUR helper
+yay -S terminalist # Or any other AUR helper (eg: paru)
 ```
 
 ### Option 3: Install from Crates.io
@@ -61,14 +55,9 @@ cargo install terminalist
 
 ```bash
 # Clone the repository
-git clone https://github.com/romaintb/terminalist.git
-cd terminalist
-
-# Build the project
-cargo build --release
-
-# Run the application
-cargo run --release
+git clone https://github.com/romaintb/terminalist.git; cd terminalist
+cargo build --release # Build the project
+cargo run --release # Run the application
 ```
 
 The binary will be available at `target/release/terminalist` after building.
